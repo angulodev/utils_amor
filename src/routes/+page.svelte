@@ -1,6 +1,6 @@
 <script>
-    let color1 = "#ff0000";
-    let color2 = "#0000ff";
+    let color1 = "#ff8080";
+    let color2 = "#ff0000";
     let iteraciones = 5;
     /**
      * @type {any[]}
@@ -8,6 +8,7 @@
     let gradientColors = [];
 
     function generarGradiente() {
+        gradientColors = [];
         gradientColors = [];
         for (let i = 0; i < iteraciones; i++) {
             const r = Math.round(
@@ -25,43 +26,62 @@
                     parseInt(color2.slice(5), 16) * i) /
                     iteraciones
             );
-            gradientColors.push(`rgb(${r},${g},${b})`);
+            const rgb = `rgb(${r},${g},${b})`;
+            const hex = `#${((r << 16) | (g << 8) | b)
+                .toString(16)
+                .padStart(6, "0")}`;
+            gradientColors.push({ rgb, hex });
         }
     }
+    generarGradiente();
 </script>
 
-<div>
-    <label for="color1">Color 1:</label>
-    <input
-        type="color"
-        id="color1"
-        bind:value={color1}
-        on:change={generarGradiente}
-    />
-
-    <label for="color2">Color 2:</label>
-    <input
-        type="color"
-        id="color2"
-        bind:value={color2}
-        on:change={generarGradiente}
-    />
-
-    <label for="iteraciones">Iteraciones (0-10):</label>
-    <input
-        type="number"
-        id="iteraciones"
-        bind:value={iteraciones}
-        min="0"
-        max="10"
-        on:change={generarGradiente}
-    />
+<main>
+    <header class="flex flex-col m-4">
+        <h2 class="mb-2">Selección de colores e iteraciones</h2>
+        <div>
+            <label for="color1">Seleccione Color 1:</label>
+            <input
+                class="border border-slate-300 rounded-md"
+                type="color"
+                id="color1"
+                bind:value={color1}
+                on:change={generarGradiente}
+            />
+        </div>
+        <div>
+            <label for="color2">Seleccione Color 2:</label>
+            <input
+                class="border border-slate-300 rounded-md"
+                type="color"
+                id="color2"
+                bind:value={color2}
+                on:change={generarGradiente}
+            />
+        </div>
+        <div>
+            <label for="iteraciones">Iteraciones (0-10):</label>
+            <input
+                class="border border-slate-300 rounded-md"
+                type="number"
+                id="iteraciones"
+                bind:value={iteraciones}
+                min="0"
+                max="10"
+                on:change={generarGradiente}
+            />
+        </div>
+    </header>
 
     <div class="flex-wrap">
-        {#each gradientColors as color}
-            <div class="w-24 h-24 m-1" style="background-color: {color}">
-                {color}
+        {#each gradientColors as { rgb, hex }}
+            <div
+                class="w-26 h-26 m-1 shadow-md justify-center text-center"
+                style="background-color: {rgb}"
+            >
+                <p>{rgb}</p>
+                <p>{hex}</p>
             </div>
         {/each}
     </div>
-</div>
+</main>
