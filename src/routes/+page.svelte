@@ -33,6 +33,22 @@
             gradientColors.push({ rgb, hex });
         }
     }
+
+    /**
+     * @param {string} hexValue
+     */
+    function copiarAlPortapapeles(hexValue) {
+        navigator.clipboard
+            .writeText(hexValue)
+            .then(() => {
+                console.log(`Copiado: ${hexValue}`);
+                // Aquí podrías mostrar una notificación o realizar otra acción para indicar que se copió el valor.
+            })
+            .catch((err) => {
+                console.error("Error al copiar al portapapeles: ", err);
+            });
+    }
+
     generarGradiente();
 </script>
 
@@ -78,6 +94,7 @@
             <div
                 class="w-26 h-26 m-1 shadow-md justify-center text-center"
                 style="background-color: {rgb}"
+                on:click={() => copiarAlPortapapeles(hex)}
             >
                 <p>{rgb}</p>
                 <p>{hex}</p>
