@@ -57,23 +57,11 @@
         on:change={generarGradiente}
     />
 
-    <div class="gradient-box">
+    <div class="flex-wrap">
         {#each gradientColors as color}
-            <div class="color-box" style="background-color: {color}" />
+            <div class="w-24 h-24 m-1" style="background-color: {color}">
+                {color}
+            </div>
         {/each}
     </div>
 </div>
-
-<style>
-    .gradient-box {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    .color-box {
-        width: 50px;
-        height: 50px;
-        margin: 5px;
-        border: 1px solid #000;
-    }
-</style>
