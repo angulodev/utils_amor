@@ -40,6 +40,7 @@
     /**
      * @param {string} hexValue
      */
+    // @ts-ignore
     function copiarAlPortapapeles(hexValue, event) {
         navigator.clipboard
             .writeText(hexValue)
@@ -52,6 +53,10 @@
             });
     }
 
+    /**
+     * @param {{ clientX: number; clientY: number; }} event
+     * @param {string} hexValue
+     */
     function mostrarMensaje(event, hexValue) {
         posX = event.clientX;
         posY = event.clientY;
@@ -103,6 +108,7 @@
 
     <div class="p-4 grid md:flex md:flex-wrap gap-4">
         {#each gradientColors as { rgb, hex }}
+            <!-- svelte-ignore a11y-no-static-element-interactions -->
             <div
                 class="relative bg-gray-200 p-4 rounded-md w-full md:w-auto md:h-auto
                 text-center
@@ -114,7 +120,6 @@
                         copiarAlPortapapeles(hex, event);
                     }
                 }}
-                tabindex="0"
             >
                 <p>{rgb}</p>
                 <p>{hex}</p>
