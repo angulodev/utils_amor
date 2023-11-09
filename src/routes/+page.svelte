@@ -44,7 +44,7 @@
         navigator.clipboard
             .writeText(hexValue)
             .then(() => {
-                console.log(`Copiado: ${hexValue}`);
+                // console.log(`Copiado: ${hexValue}`);
                 mostrarMensaje(event, hexValue);
             })
             .catch((err) => {
@@ -65,7 +65,8 @@
 
 <main>
     <header class="flex flex-col m-4">
-        <h2 class="mb-2">Selección de colores e iteraciones</h2>
+        <h2 class="mb-2">Generador de gradientes</h2>
+        <h3 class="mb-2">Selección de colores e iteraciones</h3>
         <div>
             <label for="color1">Seleccione Color 1:</label>
             <input
@@ -75,7 +76,6 @@
                 bind:value={color1}
                 on:change={generarGradiente}
             />
-            <small>{color1}</small>
         </div>
         <div>
             <label for="color2">Seleccione Color 2:</label>
@@ -86,7 +86,6 @@
                 bind:value={color2}
                 on:change={generarGradiente}
             />
-            <small>{color2}</small>
         </div>
         <div>
             <label for="iteraciones">Iteraciones (0-10):</label>
@@ -102,10 +101,12 @@
         </div>
     </header>
 
-    <div class="flex-wrap">
+    <div class="p-4 grid md:flex md:flex-wrap gap-4">
         {#each gradientColors as { rgb, hex }}
             <div
-                class="w-26 h-26 m-1 shadow-md justify-center text-center"
+                class="relative bg-gray-200 p-4 rounded-md w-full md:w-auto md:h-auto
+                text-center
+                shadow-lg cursor-pointer"
                 style="background-color: {rgb}"
                 on:click={(event) => copiarAlPortapapeles(hex, event)}
                 on:keydown={(event) => {
@@ -120,10 +121,16 @@
             </div>
         {/each}
     </div>
+
     {#if mensaje}
         <div class="absolute" style="top: {posY}px; left: {posX}px;">
-            <p class="bg-white border border-black p-2 rounded-md shadow-md">
-                Color Copiado : {mensaje} 💕
+            <p
+                class="bg-white border border-black p-2 rounded-md shadow-md text-center"
+            >
+                Color Copiado : <small class="text-lg" style="color:{mensaje}">
+                    {mensaje}
+                </small>
+                😎💕
             </p>
         </div>
     {/if}
