@@ -34,21 +34,32 @@
         }
     }
 
+    let mensaje = "";
+    let posX = 0;
+    let posY = 0;
     /**
      * @param {string} hexValue
      */
-    function copiarAlPortapapeles(hexValue) {
+    function copiarAlPortapapeles(hexValue, event) {
         navigator.clipboard
             .writeText(hexValue)
             .then(() => {
                 console.log(`Copiado: ${hexValue}`);
-                // Aquí podrías mostrar una notificación o realizar otra acción para indicar que se copió el valor.
+                mostrarMensaje(event, hexValue);
             })
             .catch((err) => {
                 console.error("Error al copiar al portapapeles: ", err);
             });
     }
 
+    function mostrarMensaje(event, hexValue) {
+        posX = event.clientX;
+        posY = event.clientY;
+        mensaje = hexValue;
+        setTimeout(() => {
+            mensaje = "";
+        }, 3000);
+    }
     generarGradiente();
 </script>
 
@@ -64,6 +75,7 @@
                 bind:value={color1}
                 on:change={generarGradiente}
             />
+            <small>{color1}</small>
         </div>
         <div>
             <label for="color2">Seleccione Color 2:</label>
@@ -74,6 +86,7 @@
                 bind:value={color2}
                 on:change={generarGradiente}
             />
+            <small>{color2}</small>
         </div>
         <div>
             <label for="iteraciones">Iteraciones (0-10):</label>
@@ -94,11 +107,24 @@
             <div
                 class="w-26 h-26 m-1 shadow-md justify-center text-center"
                 style="background-color: {rgb}"
-                on:click={() => copiarAlPortapapeles(hex)}
+                on:click={(event) => copiarAlPortapapeles(hex, event)}
+                on:keydown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                        copiarAlPortapapeles(hex, event);
+                    }
+                }}
+                tabindex="0"
             >
                 <p>{rgb}</p>
                 <p>{hex}</p>
             </div>
         {/each}
     </div>
+    {#if mensaje}
+        <div class="absolute" style="top: {posY}px; left: {posX}px;">
+            <p class="bg-white border border-black p-2 rounded-md shadow-md">
+                Color Copiado : {mensaje} 💕
+            </p>
+        </div>
+    {/if}
 </main>
